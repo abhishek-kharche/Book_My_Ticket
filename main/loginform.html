@@ -1,0 +1,555 @@
+<html>
+<head>
+<title></title>
+<style type="text/css">
+
+#passwordStrength
+{
+        height:10px;
+        display:block;
+        float:left;
+}
+
+.strength0
+{
+        width:150px;
+        background:#999;
+}
+
+.strength1
+{
+        width:50px;
+        background:#F00;
+}
+
+.strength2
+{
+        width:100px;
+        background:#F93;
+}
+
+.strength3
+{
+        width:150px;
+        background:#3C0;
+}
+
+#passwordStrengt
+{
+        height:10px;
+        display:block;
+        float:left;
+}
+
+.strength00
+{
+        width:0px;
+        background:#999;
+}
+
+.strength01
+{
+        width:100px;
+        background:#999;
+}
+
+.strength02
+{
+        width:50px;
+        background:#999;
+}
+
+.fonthead
+{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size:20px;
+	color:#FFF;
+}
+.tableclass
+{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size:14px;
+	color:#FFF;
+}
+</style>
+<script type="text/javascript" src="my.js"></script>
+<script type="text/javascript">
+var togg='0';
+$(document).ready
+
+(
+
+ function()
+
+ {$("#opt").hide();
+  $("#sans").hide();
+  $("#but1").toggle
+
+   (
+
+    function(){$("#opt").show(800);$("#sans").show(800);$("#but1").val("Or use alternate e-mail address");$("#alt_email").hide(800);$("#txtmail").replaceWith("<span class='tableclass' id='sques'>Select your security Question :</span>");togg='1';},
+
+    function(){$("#opt").hide(800);$("#sans").hide(800);$("#but1").val("Or Choose a security question");$("#alt_email").show(800);$("#sques").replaceWith("<span class='tableclass' id='txtmail'>Alternate email address :</span>");togg='0';}
+
+   );
+
+ }
+
+);
+
+
+function mouseOver()
+{
+document.getElementById("b1").src ="logofinal_2_2.png";
+}
+function mouseOut()
+{
+document.getElementById("b1").src ="logofinal.png";
+}
+
+function passwordStrength(password)
+
+{
+        var desc = new Array();   
+		
+        desc[0] = "Minimum 6 characters";
+		desc[1] = "Weak";
+        desc[2] = "Medium";
+        desc[3] = "Strong";
+		
+        var score   = 0;
+		
+        //if password has both lower and uppercase characters give 1 point      
+
+        if (password.length >= 6 && (( password.match(/[a-z]/) ) || ( password.match(/[A-Z]/) ) ) ) score++;
+
+
+
+        //if password has at least one number give 1 point
+
+        if (password.length >= 6 && password.match(/\d+/)) score++;
+
+
+
+        //if password has at least one special character give 1 point
+
+        if (password.length >= 6 && password.match(/.[!,@,#,$,%,^,&,*,?,_,~,-,(,)]/) ) score++;
+
+
+
+		 document.getElementById("passwordDescription").style.fontFamily = "Arial";
+		 document.getElementById("passwordDescription").style.fontSize = "13";
+		 document.getElementById("passwordDescription").style.color = "white";
+         document.getElementById("passwordDescription").innerHTML = desc[score];
+
+         document.getElementById("passwordStrength").className = "strength" + score;
+		 document.getElementById("passwordStrengt").className = "strength0" + score;
+}
+
+function validate()
+{
+	if(loginform.pass.value!=loginform.pass2.value)
+	{
+		alert("Password Mismatch");
+	}
+}
+
+function  six()
+{
+	if(loginform.pass.value.length<6)
+	{
+		alert("Password should me minimum six characters");
+	}
+}
+
+function verify()
+{
+	str=loginform.user.value;
+	
+	if(str=="")
+	{
+		document.getElementById("b123").innerHTML='<pre><font face="arial" color="#FFFFFF">  Enter Username</font></pre>';
+	}
+	else
+	{	
+		if (window.XMLHttpRequest)
+  		{// code for IE7+, Firefox, Chrome, Opera, Safari
+  			xmlhttp=new XMLHttpRequest();
+	  	}
+		else
+	  	{// code for IE6, IE5
+	  		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  	}
+		xmlhttp.onreadystatechange=function()
+	  	{
+	  		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	    	{
+	    		document.getElementById("b123").innerHTML=xmlhttp.responseText;
+	    	}
+	  	}
+		xmlhttp.open("GET","getuser.jsp?user="+str,true);
+		xmlhttp.send();
+	}
+}
+	/*
+	if(loginform.user.value=="abcd")
+	document.getElementById('b123').innerHTML='<input type="text" name="abcd">  ';
+	
+	//window.open('','Availability','left=500,top=200,width=400,height=200');
+	
+	*/
+
+
+	
+function checkall()
+{
+	var error="";
+	c=0;
+	m=0;
+	l=0;
+	
+	if(loginform.user.value=="")	
+	{
+		error="Enter Username\n";
+		c=1;
+	}
+	
+	
+	if(loginform.pass.value=="")
+	{
+		error=error+"Enter Password\n";
+		c=1;
+	}
+	
+	if(loginform.pass.value!=loginform.pass2.value)
+	{
+		c=1;
+		m=1;		
+	}
+	
+	if(loginform.pass2.value=="")
+	{
+		error=error+"Enter Conformation Password\n";
+		c=1;
+	}
+	
+	if(loginform.pass.value.length<6)
+	{
+		c=1;
+		l=1;
+		
+	}
+	
+	if(togg=='0')
+	{
+		document.getElementById('hid').innerHTML='<input type="hidden" name="sec_pass" value="email">';
+		if(loginform.alt_email.value=="")
+		{
+			error=error+"Enter Correct Alternate email\n";
+			c=1;
+		}
+	}
+	else
+	{
+		document.getElementById('hid').innerHTML='<input type="hidden" name="sec_pass" value="sques">';
+		if(loginform.opt.value=="Select your security Question")
+		{
+			error=error+"Select security question\n";
+			c=1;
+		}
+		
+		if(loginform.sans.value=="")
+		{
+			error=error+"Write an answer to your question\n";
+			c=1;
+		}
+	}
+	
+	if(loginform.f_name.value=="")
+	{
+		error=error+"Enter First Name\n";
+		c=1;
+	}
+	
+	if(loginform.l_name.value=="")
+	{
+		error=error+"Enter Last Name\n";
+		c=1;
+	}
+	
+	if(loginform.country.value=="Select Your Country/Region")
+	{
+		error=error+"Enter your country\n";
+		c=1;
+	}
+	
+	if(loginform.state.value=="")
+	{
+		error=error+"Enter your state\n";
+		c=1;
+	}
+	
+	if(loginform.postal.value=="")
+	{
+		error=error+"Enter postal code\n";
+		c=1;
+	}
+	
+	
+	if(c==0)
+	{	
+		add="loginform.jsp";
+		document.getElementById("loginform").action=add;
+	}
+	else
+	{
+		if(m==1)
+		alert("Password MisMatch");
+		
+		if(l==1)
+		alert("Password should be minimum 6 characters");
+		
+		alert(error);
+		add1="loginform.html";
+		document.getElementById("loginform").action=add1;
+	}
+}
+</script>
+</head>
+
+<body background="bg2.jpeg">
+<!-- DO NOT MOVE! The following AllWebMenus linking code section must always be placed right AFTER the BODY tag-->
+<!-- ******** BEGIN ALLWEBMENUS CODE FOR home_book ******** -->
+<script type="text/javascript">var MenuLinkedBy="AllWebMenus [4]",awmMenuName="home_book",awmBN="840";awmAltUrl="";</script><script charset="UTF-8" src="Menu/home_book.js" type="text/javascript"></script><script type="text/javascript">awmBuildMenu();</script>
+<!-- ******** END ALLWEBMENUS CODE FOR home_book ******** -->
+
+<p>
+
+<table width="816" hspace="317" border="0" cellpadding="0">
+  <tr>
+    <td width="168"><img src="logofinal.png" width="150" height="70" align=top id="b1" onMouseOver="mouseOver()" onMouseOut="mouseOut()" /></td>
+    <td width="35">&nbsp;</td>
+    <td width="605"><img src="heading.jpeg" width="477" height="89" align="top"></td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+</p>
+<p>&nbsp;</p>
+<table width="816" border="0" hspace="317" cellpadding="0">
+  <tr>
+    <td><font face="Arial, Helvetica, sans-serif" size="+3" color="#FFFFFF">Create your Account</font></td>
+  </tr>
+  <tr>
+    <td><span class="tableclass">This is your Book My Ticket ID - It gets you into other services like Booking Online Tickets, Checking availability etc.</span></td>
+  </tr>
+  <tr>
+    <td height="14"><hr noshade align="center" width="100%" /></td>
+  </tr>
+</table>
+<p>&nbsp; </p>
+<form action="" method="post"  id="loginform" onSubmit="checkall()">
+
+  <table width="818" hspace="317" border="0" cellpadding="1">
+<tr>
+  <td width="243"><p align="right"><span class="tableclass"><font color="#FFFFFF" face="Arial, Helvetica, sans-serif" >Username : </font></span></p>      </td>
+      <td width="248"><span class="tableclass"><font color="#FFFFFF" face="Arial, Helvetica, sans-serif">
+        <input name="user" type="text" id="user" size="30" >
+        
+        </font></span></td>
+      <td width="313" class="tableclass"><font color="#FF9933">@bookmyticket.com</font></td>
+    </tr>
+    <tr>
+      <td height="21">&nbsp;</td>
+      <td><div id="b123"></div><input type="button" name="checkuser" id="checkuser" value="Check Availability" onClick="verify()"></td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td height="52"><div align="right"><span class="tableclass"><font color="#FFFFFF" face="Arial, Helvetica, sans-serif">Password :</font></span></div></td>
+      <td><span class="tableclass"><font color="#FFFFFF" face="Arial, Helvetica, sans-serif">
+        <input name="pass" type="password" id="pass" 			onkeyup="passwordStrength(this.value)" size="30" onChange="six()" />
+      &nbsp; </font></span></td>
+      <td><div id="passwordDescription"><span class="tableclass"><font color="#FFFFFF" face="Arial, Helvetica, sans-serif" size="2">Minimum 6 characters</font></span></div>
+
+      <div id="passwordStrength" class="strength0"></div><div id="passwordStrengt" class="strength00"></div>
+      <span class="tableclass"><font color="#FFFFFF" face="Arial, Helvetica, sans-serif">&nbsp;</font></span></td>
+    </tr>
+    <tr>
+      <td height="39"><p align="right"><span class="tableclass"><font color="#FFFFFF" face="Arial, Helvetica, sans-serif">Confirm Password :</font></span></p></td>
+      <td><span class="tableclass"><font color="#FFFFFF" face="Arial, Helvetica, sans-serif">
+        <input name="pass2" type="password" id="pass2" size="30" onChange="validate()" />
+      &nbsp; </font></span></td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td><div align="right"><p id="txtmail"><span class="tableclass">Alternate email address :</span></p></div></td>
+      <td><label>
+        <input name="alt_email" type="text" id="alt_email" size="30">
+        <select name="opt" id="opt">
+          <option selected>Select your security Question</option>
+          <option>What is your pet name</option>
+          <option>Name of first pet</option>
+          <option>Favorite Teacher</option>
+          <option>Favorite Historical person</option>
+          <option>Best childhood friend</option>
+        </select>
+        <br>
+      </label>
+        <label for="opt"></label>
+      <label>        </label></td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>
+        <label for="sans"></label>
+        <p>
+          <input name="sans" type="text" id="sans" size="30">
+        </p>
+        <p>
+          <input type="button" name="but1" id="but1" value="Or Choose a security Question">
+      </p><p id="hid"></p></td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td><div align="right"></div></td>
+      <td><span class="tableclass"><font color="#FFFFFF" face="Arial, Helvetica, sans-serif">&nbsp;</font></span></td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td><div align="right"><span class="tableclass"><font color="#FFFFFF" face="Arial, Helvetica, sans-serif">First Name :</font></span>      </div></td>
+      <td><span class="tableclass"><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"><font color="#FFFFFF" face="Arial, Helvetica, sans-serif">
+        <input name="f_name" type="text" id="f_name" size="30"/>
+      </font></font></span></td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td><div align="right"><span class="tableclass"><font color="#FFFFFF" face="Arial, Helvetica, sans-serif">Last Name : </font></span>      </div></td>
+      <td><span class="tableclass"><font color="#FFFFFF" face="Arial, Helvetica, sans-serif">
+        <input name="l_name" type="text" id="l_name" size="30"/>
+      </font></span></td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td height="37" class="tablefont"><div align="right"></div></td>
+      <td colspan="2">&nbsp;</td>
+    </tr>
+    <tr>
+      <td height="37" class="tableclass"><div align="right"><font color="#FFFFFF">Country/Region : </font></div></td>
+      <td><label for="country" ></label>
+        <select name="country" id="country">
+          <option>Select Your Country/Region</option>
+          <option>Afghanistan </option>
+          <option>Australia</option>
+          <option>Bangladesh</option>
+          <option>Brazil</option>
+          <option>Canada</option>
+          <option>China</option>
+          <option>Costa Rica</option>
+          <option>Cuba</option>
+          <option>Czech Republic</option>
+          <option>Denmark</option>
+          <option>Egypt</option>
+          <option>France</option>
+          <option>Georgia</option>
+          <option>Germany</option>
+          <option>Greece</option>
+          <option>Guinea</option>
+          <option>Haiti</option>
+          <option>Hong-Kong</option>
+          <option>Hungary</option>
+          <option>Iceland</option>
+          <option>India</option>
+          <option>Indonesia</option>
+          <option>Iran</option>
+          <option>Iraq</option>
+          <option>Italy</option>
+          <option>Jamaica</option>
+          <option>Jordan</option>
+          <option>Kazakhstan </option>
+          <option>Kenya</option>
+          <option>Libya</option>
+          <option>Malasia</option>
+          <option>Mauritius</option>
+          <option>Namibia</option>
+          <option>Nepal</option>
+          <option>North Korea</option>
+          <option>Oman</option>
+          <option>Peru</option>
+          <option>Poland</option>
+          <option>Portugal</option>
+          <option>Qatar</option>
+          <option>Singapore</option>
+          <option>South Africa</option>
+          <option>Spain</option>
+          <option>Sri Lanka</option>
+          <option>Switzerland</option>
+          <option>Thailand</option>
+          <option>United States</option>
+          <option>Vietnam</option>
+        </select>        
+      <label for="add"></label></td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td><div align="left" class="tableclass">
+        <div align="right"><font color="#FFFFFF">State/Territory :</font></div>
+      </div></td>
+      <td><label for="state"></label>
+      <input name="state" type="text" id="state" size="30"></td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td><div align="left" class="tableclass">
+        <div align="right"><font color="#FFFFFF">Postal Code : </font></div>
+      </div></td>
+      <td><label>
+        <input name="postal" type="text" id="postal" size="30">
+      </label></td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td class="tableclass"><div align="right"></div></td>
+      <td class="tableclass"><div align="left"></div></td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td height="33" class="tableclass"><div align="right"><font color="#FFFFFF">Gender :</font></div></td>
+      <td rowspan="2"><p>
+        <label>
+          <span class="tableclass">
+          <input type="radio" name="gender" value="Male" id="Gender_0">
+          Male</span></label>
+        <span class="tableclass">
+        <input type="radio" name="gender" value="Female" id="Gender_1">
+        <label>Female</label>
+<br>
+        </span><br>
+      </p></td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td><div align="right"></div></td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td colspan="3"><hr align="center" noshade width="100%" />
+        <blockquote>
+          <p class="tableclass">Clicking I accept means that you agree to Book My Ticket Service Management and privacy statements.</p>
+        </blockquote></td>
+    </tr>
+    <tr>
+      <td><div align="right"></div></td>
+      <td><div align="left">
+        <blockquote>
+          <p>
+            <input type="submit" name="submit" id="submit" value="I accept">
+          </p>
+        </blockquote>
+      </div></td>
+      <td>&nbsp;</td>
+    </tr>
+</table>
+</form>
+</body>
+
+</html>
